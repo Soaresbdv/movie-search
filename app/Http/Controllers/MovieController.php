@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TMDBService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class MovieController extends Controller
 {
-    public function index()
+    public function index(TMDBService $tmdbService)
     {
-        // Faz um GET na API do TMDB enviando o Token de autorização
-        $response = Http::withToken(env('TMDB_TOKEN'))
-            ->get(env('TMDB_BASE_URL') . '/movie/popular', [
-                'language' => 'pt-BR', // Traz os textos em português
-                'page' => 1,
-            ]);
+        $movies = $tmdbService->getPopularMovies();
 
-        // Retorna o resultado direto na tela (em JSON) para testarmos
-        return $response->json();
+        return response()->json($movies);
     }
 }
