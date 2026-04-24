@@ -23,4 +23,14 @@ class TMDBService
                 'page' => $page,
             ])->json();
     }
+
+    public function searchMovies($searchQuery, $page = 1)
+    {
+        return Http::withToken($this->token)
+            ->get("{$this->baseUrl}/search/movie", [
+                'query' => $searchQuery,
+                'language' => 'pt-BR',
+                'page' => $page,
+            ])->json();
+    }
 }

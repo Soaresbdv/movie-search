@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    public function index(TMDBService $tmdbService)
+    public function index(Request $request, TMDBService $tmdbService)
     {
-        $movies = $tmdbService->getPopularMovies();
+        $searchQuery = $request->input('search');
+
+        if ($searchQuery) {
+            $movies = $tmdbService->searchMovies($searchQuery);
+        } else {
+            $movies = $tmdbService->getPopularMovies();
+        }
 
         return response()->json($movies);
     }
